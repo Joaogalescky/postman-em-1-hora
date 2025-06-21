@@ -1,0 +1,509 @@
+{
+	"info": {
+		"_postman_id": "c7ff15a9-b79a-4712-81df-a87bd9a1efba",
+		"name": "Postman em 1 hora",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "34348800"
+	},
+	"item": [
+		{
+			"name": "Books API",
+			"item": [
+				{
+					"name": "Livro",
+					"item": [
+						{
+							"name": "Listar Livros",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "https://simple-books-api.glitch.me/books?type=&limit=",
+									"protocol": "https",
+									"host": [
+										"simple-books-api",
+										"glitch",
+										"me"
+									],
+									"path": [
+										"books"
+									],
+									"query": [
+										{
+											"key": "type",
+											"value": "",
+											"description": "fiction or non-fiction"
+										},
+										{
+											"key": "limit",
+											"value": "",
+											"description": "1 or 20"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Buscar Livro",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"// Test for successful response status code\r",
+											"pm.test(\"Status code is 200\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Verify if type is 'fiction' or 'non-fiction'\", function () {\r",
+											"    const response = pm.response.json();\r",
+											"    pm.expect(response.type).to.be.oneOf(['fiction', 'non-fiction'])\r",
+											"});\r",
+											"\r",
+											"// Test for response time\r",
+											"pm.test(\"Response time is less than 500ms\", function () {\r",
+											"    pm.expect(pm.response.responseTime).to.be.below(500);\r",
+											"});\r",
+											"\r",
+											"// Test for content-type header\r",
+											"pm.test(\"Content-Type is present and correct\", function () {\r",
+											"    pm.response.to.have.header(\"content-type\", \"application/json; charset=utf-8\");\r",
+											"});\r",
+											"\r",
+											"// Test for response body structure\r",
+											"pm.test(\"Response body has 'id', 'name','author', 'isbn', 'type', 'price', 'current-stock' and 'available' properties\", function () {\r",
+											"    const responseBody = pm.response.json();\r",
+											"    pm.expect(responseBody).to.have.property(\"id\");\r",
+											"    pm.expect(responseBody).to.have.property(\"name\");\r",
+											"    pm.expect(responseBody).to.have.property(\"author\");\r",
+											"    pm.expect(responseBody).to.have.property(\"isbn\");\r",
+											"    pm.expect(responseBody).to.have.property(\"type\");\r",
+											"    pm.expect(responseBody).to.have.property(\"price\");\r",
+											"    pm.expect(responseBody).to.have.property(\"current-stock\");\r",
+											"    pm.expect(responseBody).to.have.property(\"available\");\r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "https://simple-books-api.glitch.me/books/:bookId",
+									"protocol": "https",
+									"host": [
+										"simple-books-api",
+										"glitch",
+										"me"
+									],
+									"path": [
+										"books",
+										":bookId"
+									],
+									"variable": [
+										{
+											"key": "bookId",
+											"value": "1",
+											"description": "1 or 20"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Reservar Livro",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{accessToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [
+									{
+										"key": "",
+										"value": "",
+										"type": "text",
+										"disabled": true
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"bookId\": 1,\r\n    \"customerName\": \"{{$randomFullName}}\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://simple-books-api.glitch.me/orders",
+									"protocol": "https",
+									"host": [
+										"simple-books-api",
+										"glitch",
+										"me"
+									],
+									"path": [
+										"orders"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Reserva",
+					"item": [
+						{
+							"name": "Listar todas as reservas",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{accessToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "https://simple-books-api.glitch.me/orders",
+									"protocol": "https",
+									"host": [
+										"simple-books-api",
+										"glitch",
+										"me"
+									],
+									"path": [
+										"orders"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Buscar reserva",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{accessToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"customerName\": \"Fulano da Silva\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://simple-books-api.glitch.me/orders/:orderId",
+									"protocol": "https",
+									"host": [
+										"simple-books-api",
+										"glitch",
+										"me"
+									],
+									"path": [
+										"orders",
+										":orderId"
+									],
+									"variable": [
+										{
+											"key": "orderId",
+											"value": ""
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Atualizar reserva",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{accessToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PATCH",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"customerName\": \"Fulano da Silva\"\r\n}"
+								},
+								"url": {
+									"raw": "https://simple-books-api.glitch.me/orders/:orderId",
+									"protocol": "https",
+									"host": [
+										"simple-books-api",
+										"glitch",
+										"me"
+									],
+									"path": [
+										"orders",
+										":orderId"
+									],
+									"variable": [
+										{
+											"key": "orderId",
+											"value": ""
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Excluir Reserva",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{accessToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "https://simple-books-api.glitch.me/orders/:orderId",
+									"protocol": "https",
+									"host": [
+										"simple-books-api",
+										"glitch",
+										"me"
+									],
+									"path": [
+										"orders",
+										":orderId"
+									],
+									"variable": [
+										{
+											"key": "orderId",
+											"value": ""
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Inicio",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://simple-books-api.glitch.me",
+							"protocol": "https",
+							"host": [
+								"simple-books-api",
+								"glitch",
+								"me"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Status",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response status code is 200\", function () {\r",
+									"    pm.expect(pm.response.code).to.equal(200);\r",
+									"});\r",
+									"\r",
+									"\r",
+									"pm.test(\"Response time is less than 500ms\", function () {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(500);\r",
+									"});\r",
+									"\r",
+									"\r",
+									"pm.test(\"Response has the required field 'status'\", function () {\r",
+									"    const responseData = pm.response.json();\r",
+									"    \r",
+									"    pm.expect(responseData).to.be.an('object').that.includes.keys('status');\r",
+									"});\r",
+									"\r",
+									"\r",
+									"pm.test(\"The status field must be a non-empty string\", function () {\r",
+									"    const responseData = pm.response.json();\r",
+									"    \r",
+									"    pm.expect(responseData).to.be.an('object');\r",
+									"    pm.expect(responseData.status).to.exist.and.to.be.a('string').and.to.have.lengthOf.at.least(1, \"Value should not be empty\");\r",
+									"});\r",
+									"\r",
+									"\r",
+									"pm.test(\"Response content type is application/json\", function () {\r",
+									"    pm.expect(pm.response.headers.get('Content-Type')).to.include(\"application/json\");\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"packages": {},
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://simple-books-api.glitch.me/status",
+							"protocol": "https",
+							"host": [
+								"simple-books-api",
+								"glitch",
+								"me"
+							],
+							"path": [
+								"status"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Autenticação",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"clientName\": \"Fulano da Silva\",\r\n    \"clientEmail\": \"fulano@silva.com\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://simple-books-api.glitch.me/api-clients/",
+							"protocol": "https",
+							"host": [
+								"simple-books-api",
+								"glitch",
+								"me"
+							],
+							"path": [
+								"api-clients",
+								""
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"packages": {},
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"packages": {},
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "accessToken",
+			"value": "5f98fe5274b798af39cb168f45f68bd035b29fa556d53437272b9b150b9a5b44",
+			"type": "string"
+		}
+	]
+}
